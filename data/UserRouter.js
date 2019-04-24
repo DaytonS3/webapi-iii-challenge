@@ -34,4 +34,23 @@ router.get("/:id", (req, res) => {
     });
 });
 
+router.post("/", (req, res) => {
+  const { name } = req.body;
+  if (!name) {
+    res.status(400).json({
+      errorMessage: "Please provide name for the post."
+    });
+  } else {
+    db.insert({ name })
+      .then(post => {
+        res.status(201).json(post);
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: "There was an error while saving the post to the database"
+        });
+      });
+  }
+});
+
 module.exports = router;
