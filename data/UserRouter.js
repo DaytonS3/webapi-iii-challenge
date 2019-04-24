@@ -70,4 +70,30 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+router.put("/:id", (req, res) => {
+  const userId = req.params.id;
+  const updateUser = req.body;
+  if (!updateUser.name) {
+    res.status(400).json({
+      errorMessage: "Please provide name for the user."
+    });
+  } else {
+    db.update(userId, updateUser)
+      .then(post => {
+        if (!post) {
+          res.status(404).json({
+            message: "The user with the specified ID does not exist."
+          });
+        } else {
+          res.status(200).json(post);
+        }
+      })
+      .catch(err => {
+        res.status(500).json({
+          error: "The user information could not be modified."
+        });
+      });
+  }
+});
+
 module.exports = router;
