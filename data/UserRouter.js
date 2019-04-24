@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const db = require("./helpers/userDb");
+const upperCase = require("../middleware/Uppercase");
 
 router.get("/", (req, res) => {
   db.get()
@@ -34,7 +35,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", upperCase, (req, res) => {
   const { name } = req.body;
   if (!name) {
     res.status(400).json({
@@ -70,7 +71,7 @@ router.delete("/:id", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", upperCase, (req, res) => {
   const userId = req.params.id;
   const updateUser = req.body;
   if (!updateUser.name) {
